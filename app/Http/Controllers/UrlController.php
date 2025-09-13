@@ -12,7 +12,9 @@ class UrlController extends Controller
 {
     public function index()
     {
-        $urls = Url::where('user_id', Auth::id())->get();
+        $urls = Url::where('user_id', Auth::id())
+                ->orderBy('id', 'desc')
+                ->paginate(10);
         return view('urls.index', compact('urls'));
     }
 

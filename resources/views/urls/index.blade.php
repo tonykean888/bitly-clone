@@ -122,7 +122,6 @@
                                         btn.textContent = 'Copied';
                                         setTimeout(() => btn.textContent = original, 1200);
                                     }).catch(() => {
-                                        // Fallback
                                         const textarea = document.createElement('textarea');
                                         textarea.value = url;
                                         document.body.appendChild(textarea);
@@ -135,6 +134,10 @@
                                     });
                                 });
                             </script>
+                            
+                            <div class="mt-6">
+                                {{ $urls->links() }}
+                            </div>
                         @endif
                     </section>
                 </div>
