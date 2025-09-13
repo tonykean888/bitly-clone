@@ -1,0 +1,144 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h1>List URLs</h1>
+        </h2>
+        
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <div class="mb-4 flex justify-end">
+                <a href="{{ route('urls.create') }}"
+                    class="inline-flex items-center border tracking-widest uppercase rounded-md bg-gray-800 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                    {{ __('Create Link') }}
+                </a>
+                </div>
+                <div class="max-w-6xl">
+                    <section>
+                        
+                        @if ($urls->isEmpty())
+                            <div class="p-6 text-gray-900">
+                                You have not shortened any URLs yet.
+                            </div>
+                        @else
+                            <table class="min-w-full table-auto divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col"
+                                            class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                            Original URL</th>
+                                        <th scope="col"
+                                            class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                            Short URL</th>
+                                        <th scope="col"
+                                            class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                            Created</th>
+                                        <th scope="col"
+                                            class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                            Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    @foreach ($urls as $url)
+                                        @php($short = route('url.redirect', ['shortKey' => $url->short_key]))
+                                        <tr class="odd:bg-white even:bg-gray-50 hover:bg-gray-100/60 transition-colors">
+                                            <td class="px-4 py-3 align-top">
+                                                <a href="{{ $url->full_url }}"
+                                                    class="text-blue-600 hover:text-blue-800 break-all" target="_blank"
+                                                    rel="noopener noreferrer">
+                                                    {{ Str::limit($url->full_url, 60) }}
+                                                </a>
+                                            </td>
+                                            <td class="px-4 py-3 align-top">
+                                                <div class="flex items-center gap-2">
+                                                    <a href="{{ $short }}"
+                                                        class="text-emerald-700 hover:text-emerald-900 break-all"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer">{{ $short }}</a>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 text-gray-600 align-top">
+                                                <span title="{{ $url->created_at->format('Y-m-d H:i') }}">
+                                                    {{ $url->created_at->format('Y-m-d H:i') }}
+                                                </span>
+                                            </td>
+                                            <td class="px-4 py-3 align-top">
+                                                <div class="flex justify-end gap-4">
+                                                    <button type="button"
+                                                        class="copy-btn inline-flex items-center tracking-widest uppercase rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
+                                                        data-url="{{ $short }}">
+                                                        Copy
+                                                    </button>
+                                                    <a href="{{ route('urls.edit', $url) }}" target="_blank" rel="noopener noreferrer"
+                                                       class="inline-flex items-center tracking-widest uppercase gap-1.5 border rounded-md bg-blue-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800">
+                                                        Edit
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
+                                                            <path d="M12.5 3a.75.75 0 0 0 0 1.5h2.69l-6.72 6.72a.75.75 0 1 0 1.06 1.06l6.72-6.72V8.5a.75.75 0 0 0 1.5 0V3.75A.75.75 0 0 0 16.75 3h-4.25Z"/>
+                                                            <path d="M6.25 5A2.25 2.25 0 0 0 4 7.25v7.5A2.25 2.25 0 0 0 6.25 17h7.5A2.25 2.25 0 0 0 16 14.75V11a.75.75 0 0 0-1.5 0v3.75a.75.75 0 0 1-.75.75h-7.5a.75.75 0 0 1-.75-.75v-7.5a.75.75 0 0 1 .75-.75H9a.75.75 0 0 0 0-1.5H6.25Z"/>
+                                                        </svg>
+                                                    </a>
+                                                    <x-danger-button
+                                                        x-data=""
+                                                        x-on:click.prevent="$dispatch('open-modal', 'confirm-url-deletion-{{ $url->id }}')"
+                                                        class="inline-flex items-center border-gray-300 rounded-md bg-red-50 px-3 py-1.5 text-xs text-red-700 hover:bg-red-100">
+                                                        Delete
+                                                    </x-danger-button>
+                                                    
+                                                    <x-modal name="confirm-url-deletion-{{ $url->id }}" focusable>
+                                                        <form method="POST" action="{{ route('urls.destroy', $url) }}" class="p-6">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            
+                                                            <h2 class="text-lg font-medium text-gray-900">
+                                                                {{ __('Are you sure you want to delete this URL?') }}
+                                                            </h2>
+                                                            
+                                                            <div class="mt-6 flex justify-end">
+                                                                <x-secondary-button x-on:click="$dispatch('close')">
+                                                                    {{ __('Cancel') }}
+                                                                </x-secondary-button>
+                                                                
+                                                                <x-danger-button class="ms-3">
+                                                                    {{ __('Delete URL') }}
+                                                                </x-danger-button>
+                                                            </div>
+                                                        </form>
+                                                    </x-modal>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <script>
+                                document.addEventListener('click', function(e) {
+                                    const btn = e.target.closest('.copy-btn');
+                                    if (!btn) return;
+                                    const url = btn.dataset.url;
+                                    navigator.clipboard?.writeText(url).then(() => {
+                                        const original = btn.textContent;
+                                        btn.textContent = 'Copied';
+                                        setTimeout(() => btn.textContent = original, 1200);
+                                    }).catch(() => {
+                                        // Fallback
+                                        const textarea = document.createElement('textarea');
+                                        textarea.value = url;
+                                        document.body.appendChild(textarea);
+                                        textarea.select();
+                                        document.execCommand('copy');
+                                        document.body.removeChild(textarea);
+                                        const original = btn.textContent;
+                                        btn.textContent = 'Copied';
+                                        setTimeout(() => btn.textContent = original, 1200);
+                                    });
+                                });
+                            </script>
+                        @endif
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>

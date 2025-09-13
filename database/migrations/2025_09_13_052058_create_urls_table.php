@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('urls', function (Blueprint $table) {
             $table->id();
             $table->string('full_url', 2048);
-            $table->string('short_key', 10)->unique();
+            $table->string('short_key', 10)->unique()->nullable();
+            $table->string('title', 255)->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

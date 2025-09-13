@@ -11,6 +11,7 @@ class Url extends Model
         'full_url',
         'short_key',
         'user_id',
+        'title',
     ];
 
     public function user()
