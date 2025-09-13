@@ -50,6 +50,9 @@
                                                     rel="noopener noreferrer">
                                                     {{ Str::limit($url->full_url, 60) }}
                                                 </a>
+                                                <p class="text-sm text-gray-500 mt-1">
+                                                    {{ Str::limit($url->title ?? '', 50) }}
+                                                </p>
                                             </td>
                                             <td class="px-4 py-3 align-top">
                                                 <div class="flex items-center gap-2">

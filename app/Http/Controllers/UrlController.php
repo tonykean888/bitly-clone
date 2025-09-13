@@ -7,6 +7,7 @@ use App\Models\Url;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreUrlRequest;
 
 class UrlController extends Controller
 {
@@ -23,18 +24,15 @@ class UrlController extends Controller
         return view('urls.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreUrlRequest $request)
     {
         DB::transaction(function () use ($request) {
-            $request->validate([
-                'full_url' => 'required|url|max:2048',
-                'title' => 'nullable|string|max:255',
-            ]);
+            $validated = $request->validated();
 
             $url = Url::create([
-                'full_url' => $request->input('full_url'),
+                'full_url' => $validated['full_url'],
                 'user_id' => Auth::id(),
-                'title' => $request->input('title'),
+                'title' => $validated['title']??null,
             ]);
 
             $shortKey = base64_encode($url->id);
@@ -67,20 +65,21 @@ class UrlController extends Controller
         return view('urls.edit', compact('url'));
     }
 
-    public function update(Request $request, Url $url)
+    public function update(StoreUrlRequest $request, Url $url)
     {
         if ($url->user_id !== Auth::id()) {
             return redirect()->route('urls.index')->with('error', 'Unauthorized action.');
         }
 
-        $request->validate([
-            'full_url' => 'required|url|max:2048',
-            'title' => 'nullable|string|max:255',
-        ]);
-
+        // $request->validate([
+        //     'full_url' => 'required|url|max:2048',
+        //     'title' => 'nullable|string|max:255',
+        // ]);
+        $validated = $request->validated();
+                
         $url->update([
-            'full_url' => $request->input('full_url'),
-            'title' => $request->input('title'),
+            'full_url' => $validated['full_url'],
+            'title' => $validated['title'],
         ]);
 
         return redirect()->route('urls.index')->with('success', 'URL updated successfully.');
