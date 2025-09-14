@@ -70,11 +70,7 @@ class UrlController extends Controller
         if ($url->user_id !== Auth::id()) {
             return redirect()->route('urls.index')->with('error', 'Unauthorized action.');
         }
-
-        // $request->validate([
-        //     'full_url' => 'required|url|max:2048',
-        //     'title' => 'nullable|string|max:255',
-        // ]);
+        
         $validated = $request->validated();
                 
         $url->update([

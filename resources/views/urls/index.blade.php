@@ -64,7 +64,7 @@
                                             </td>
                                             <td class="px-4 py-3 text-gray-600 align-top">
                                                 <span title="{{ $url->created_at->format('Y-m-d H:i') }}">
-                                                    {{ $url->created_at->format('Y-m-d H:i') }}
+                                                    {{ $url->created_at->format('d-m-Y H:i') }}
                                                 </span>
                                             </td>
                                             <td class="px-4 py-3 align-top">
