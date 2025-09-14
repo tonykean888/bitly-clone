@@ -9,11 +9,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-});
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -31,4 +26,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/b/{shortKey}', [UrlController::class, 'redirect'])->name('url.redirect');
 
+
 require __DIR__.'/auth.php';
+require __DIR__.'/admin.php';

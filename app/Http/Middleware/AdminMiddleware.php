@@ -19,6 +19,11 @@ class AdminMiddleware
         if (Auth::check() && Auth::user()->is_admin) {
             return $next($request);
         }
-        return redirect('/')->with('error', 'Unauthorized access.');
+
+        if (Auth::check()) {
+            return redirect()->route('admin.login')->with('error', 'You do not have admin privileges.');
+        }
+        //User is not authenticated
+        return redirect()->route('login');
     }
 }
