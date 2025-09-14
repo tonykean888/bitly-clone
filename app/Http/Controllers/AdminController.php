@@ -51,7 +51,7 @@ class AdminController extends Controller
     public function users()
     {
         $users = User::latest()->paginate(15);
-        return view('admin.users', compact('users'));
+        return view('admin.users.index', compact('users'));
     }
 
     public function deleteUser(User $user)
