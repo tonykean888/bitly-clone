@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin','throttle:60,1'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/urls', [AdminController::class, 'urls'])->name('admin.urls');
     Route::get('/urls/{url}/edit', [AdminController::class, 'editUrl'])->name('admin.urls.edit');
@@ -18,8 +18,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 });
 
 
-Route::get('/admin/login', [AdminAuthController::class, 'create'])->name('admin.login');
-Route::post('/admin/login', [AdminAuthController::class, 'store']);
+Route::get('/admin/login', [AdminAuthController::class, 'create'])->middleware('throttle:30,1')->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'store'])->middleware('throttle:30,1');
 
 
 Route::middleware('auth')->group(function () {
