@@ -34,12 +34,15 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                                         <a href="{{ $url->full_url }}" target="_blank" class="text-blue-600 hover:text-blue-800" rel="noopener noreferrer">
-                                            {{ Str::limit($url->full_url, 30) }}
+                                            {{ Str::limit($url->full_url, 60) }}
                                         </a>
+                                        <p class="text-sm text-gray-500 mt-1">
+                                            {{ Str::limit($url->title ?? '', 50) }}
+                                        </p>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                                         <a href="{{ route('url.redirect', ['shortKey' => $url->short_key]) }}" target="_blank" class="text-blue-600 hover:text-blue-800">
-                                            {{ $url->short_key }}
+                                            {{ route('url.redirect', ['shortKey' => $url->short_key]) }}
                                         </a>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $url->user->name }}</td>

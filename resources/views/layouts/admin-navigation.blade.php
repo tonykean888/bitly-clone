@@ -29,7 +29,7 @@
                 <div class="mr-3 text-white">
                     {{ Auth::user()->name }}
                 </div>
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('admin.logout') }}">
                     @csrf
                     <button type="submit" class="text-gray-300 hover:text-white">
                         {{ __('Log Out') }}

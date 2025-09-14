@@ -10,7 +10,11 @@ use App\Http\Controllers\AdminAuthController;
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/urls', [AdminController::class, 'urls'])->name('admin.urls');
+    Route::get('/urls/{url}/edit', [AdminController::class, 'editUrl'])->name('admin.urls.edit');
+    Route::put('/urls/{url}', [AdminController::class, 'updateUrl'])->name('admin.urls.update');
+    Route::delete('/urls/{url}', [AdminController::class, 'deleteUrl'])->name('admin.urls.delete');
     Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');
 });
 
 
