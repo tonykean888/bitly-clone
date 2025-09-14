@@ -6,7 +6,7 @@
         
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="mb-4 flex justify-end">
@@ -50,6 +50,9 @@
                                                     rel="noopener noreferrer">
                                                     {{ Str::limit($url->full_url, 60) }}
                                                 </a>
+                                                <p class="text-sm text-gray-500 mt-1">
+                                                    {{ Str::limit($url->title ?? '', 50) }}
+                                                </p>
                                             </td>
                                             <td class="px-4 py-3 align-top">
                                                 <div class="flex items-center gap-2">
@@ -61,7 +64,7 @@
                                             </td>
                                             <td class="px-4 py-3 text-gray-600 align-top">
                                                 <span title="{{ $url->created_at->format('Y-m-d H:i') }}">
-                                                    {{ $url->created_at->format('Y-m-d H:i') }}
+                                                    {{ $url->created_at->format('d-m-Y H:i') }}
                                                 </span>
                                             </td>
                                             <td class="px-4 py-3 align-top">

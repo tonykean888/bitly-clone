@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Blade;
+use App\View\Components\AdminLayout;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
+        Blade::component('admin-layout', AdminLayout::class);
     }
 }
